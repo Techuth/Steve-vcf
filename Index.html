@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>PK DRILLER VCF SUPPORT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', Arial, sans-serif;
+      background: #111;
+      overflow-x: hidden;
+    }
+    /* Live animated gradient background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      background: linear-gradient(-45deg, #0fffc2, #0083fe, #ff00c8, #fffc00);
+      background-size: 400% 400%;
+      animation: gradientBG 16s ease-in-out infinite;
+      filter: blur(12px);
+      opacity: 0.8;
+    }
+    @keyframes gradientBG {
+      0% {background-position:0% 50%}
+      50% {background-position:100% 50%}
+      100% {background-position:0% 50%}
+    }
+    .container {
+      position: relative;
+      z-index: 2;
+      background: rgba(0,0,0,0.87);
+      margin: 3rem auto;
+      max-width: 420px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.47);
+      padding: 2.5rem 2rem 1.5rem 2rem;
+      color: #fff;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+    .glow {
+      color: #0fffc2;
+      text-shadow: 0 0 5px #00f9ff, 0 0 20px #0083fe, 0 0 30px #ff00c8;
+      letter-spacing: 2px;
+      font-size: 2.2rem;
+    }
+    .timer {
+      color: #fffc00;
+      text-shadow: 0 0 8px #fffc00, 0 0 14px #ff00c8;
+      font-weight: bold;
+    }
+    .registration-form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .registration-form input[type="text"],
+    .registration-form input[type="tel"] {
+      padding: 0.7rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+    .glow-button {
+      background: linear-gradient(90deg, #0fffc2 0%, #ff00c8 100%);
+      color: #222;
+      border: none;
+      padding: 0.9rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00f9ff, 0 0 16px #ff00c8;
+      transition: background 0.3s, transform 0.2s;
+      text-shadow: 0 0 1px #fff;
+      margin-top: 0.3em;
+    }
+    .glow-button:active {
+      transform: scale(0.96);
+    }
+    .glow-button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.6);
+    }
+    .channel-link {
+      color: #fffc00;
+      text-decoration: underline;
+      font-weight: bold;
+      text-shadow: 0 0 6px #ff00c8;
+    }
+    .contacts-list {
+      margin: 1.5rem 0;
+      text-align: left;
+      background: rgba(0,0,0,0.3);
+      padding: 1rem;
+      border-radius: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .contacts-list h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #0fffc2;
+      text-shadow: 0 0 5px #0083fe;
+    }
+    .contacts-list ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .contacts-list li {
+      padding: 2px 0;
+      border-bottom: 1px solid #2bb4ff33;
+      font-size: 1rem;
+    }
+    .owner-section {
+      margin-top: 2rem;
+      text-align: left;
+    }
+    .owner-text {
+      font-weight: bold;
+      color: #0fffc2;
+      margin-left: .5em;
+    }
+    .owner-download {
+      margin-top: 1rem;
+      width: 100%;
+      background: linear-gradient(90deg, #fffc00 0%, #ff00c8 100%);
+      color: #000;
+      box-shadow: 0 0 10px #fffc00, 0 0 18px #ff00c8;
+    }
+    .owner-details {
+      margin-top: 2rem;
+      font-size: 0.97rem;
+      color: #0fffc2;
+      text-shadow: 0 0 8px #222;
+    }
+    .follow-label {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1rem;
+    }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 99vw;
+        padding: 1.2rem;
+      }
+    }
+    /* Lightning border effect for buttons */
+    .glow-button, .owner-download {
+      box-shadow: 0 0 15px 2px #00f9ff, 0 0 30px 8px #ff00c8;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <span class="glow">PK DRILLER VCF SUPPORT</span>
+    </h1>
+    <p>
+      Register to be added to the exclusive PK DRILLER VCF!<br />
+      <b>Registration closes in: <span class="timer" id="countdown"></span></b>
+    </p>
+    <form id="registrationForm" class="registration-form">
+      <input
+        type="text"
+        placeholder="Full Name"
+        id="reg_name"
+        required
+        autocomplete="off"
+      />
+      <input
+        type="tel"
+        placeholder="Phone Number"
+        id="reg_phone"
+        required
+        autocomplete="off"
+      />
+      <label class="follow-label">
+        <input
+          type="checkbox"
+          id="reg_follow"
+          required
+        />
+        <span>
+          I have <a href="https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x" target="_blank" rel="noopener noreferrer" class="channel-link">followed the WhatsApp channel</a> (required)
+        </span>
+      </label>
+      <button
+        type="submit"
+        class="glow-button"
+        id="reg_submit"
+      >
+        Register
+      </button>
+    </form>
+    <div class="contacts-list" id="contactsList" style="display:none;">
+      <h3>Registered People (<span id="contactsCount">0</span>)</h3>
+      <ul id="contactsUl"></ul>
+    </div>
+    <div class="owner-section">
+      <label>
+        <input type="checkbox" id="isOwner" />
+        <span class="owner-text">I am the owner (PK DRILLER)</span>
+      </label>
+      <button
+        class="glow-button owner-download"
+        id="downloadVCF"
+        style="display:none;"
+      >
+        Download VCF
+      </button>
+    </div>
+    <footer>
+      <div class="owner-details">
+        <strong>Contact Owner:</strong> <br />
+        Email: <a href="mailto:benardwachira49@gmail.com">benardwachira49@gmail.com</a><br />
+        Phone: <a href="tel:+254794146821">+254794146821</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    // Countdown logic
+    // Registration period in seconds (e.g., 1 day = 86400s)
+    const REG_PERIOD_SECONDS = 24 * 60 * 60;
+    const END_TIME_KEY = "pkdrill_vcf_end";
+    let endTime = window.localStorage.getItem(END_TIME_KEY);
+    if (!endTime) {
+      endTime = Math.floor(Date.now() / 1000) + REG_PERIOD_SECONDS;
+      window.localStorage.setItem(END_TIME_KEY, endTime);
+    } else {
+      endTime = parseInt(endTime, 10);
+    }
+    function updateCountdown() {
+      const now = Math.floor(Date.now() / 1000);
+      let diff = endTime - now;
+      if (diff < 0) diff = 0;
+      const h = String(Math.floor(diff / 3600)).padStart(2, "0");
+      const m = String(Math.floor((diff % 3600) / 60)).padStart(2, "0");
+      const s = String(diff % 60).padStart(2, "0");
+      document.getElementById("countdown").textContent = `${h}h ${m}m ${s}s`;
+      return diff;
+    }
+    setInterval(() => {
+      const left = updateCountdown();
+      // Disable registration if expired
+      document.getElementById('reg_submit').disabled = left === 0;
+    }, 1000);
+    updateCountdown();
+
+    // Registration logic
+    const contactsKey = "pkdrill_vcf_contacts";
+    let contacts = [];
+    // Load from localStorage
+    function loadContacts() {
+      try {
+        contacts = JSON.parse(localStorage.getItem(contactsKey)) || [];
+      } catch { contacts = []; }
+      updateContactsUI();
+    }
+    function saveContacts() {
+      localStorage.setItem(contactsKey, JSON.stringify(contacts));
+    }
+    function updateContactsUI() {
+      const ul = document.getElementById('contactsUl');
+      ul.innerHTML = "";
+      contacts.forEach((c, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${c.name} - ${c.phone}`;
+        ul.appendChild(li);
+      });
+      document.getElementById('contactsCount').textContent = contacts.length;
+      document.getElementById('contactsList').style.display = contacts.length ? "block" : "none";
+    }
+    loadContacts();
+
+    document.getElementById("registrationForm").onsubmit = function(e) {
+      e.preventDefault();
+      if (updateCountdown() === 0) {
+        alert("Registration period is over!");
+        return;
+      }
+      const name = document.getElementById("reg_name").value.trim();
+      const phone = document.getElementById("reg_phone").value.trim();
+      const followed = document.getElementById("reg_follow").checked;
+      if (!name || !phone) return alert("All fields required!");
+      if (!followed) return alert("You must follow the WhatsApp channel first!");
+      // Prevent duplicate phone
+      if (contacts.some(c => c.phone === phone)) {
+        alert("This phone number is already registered.");
+        return;
+      }
+      contacts.push({ name, phone });
+      saveContacts();
+      updateContactsUI();
+      document.getElementById("registrationForm").reset();
+    };
+
+    // Owner logic
+    document.getElementById("isOwner").onchange = function() {
+      document.getElementById("downloadVCF").style.display = this.checked ? "block" : "none";
+    };
+
+    // VCF generator
+    function generateVCF(contacts) {
+      let vcf = "";
+      contacts.forEach(({ name, phone }) => {
+        vcf += `BEGIN:VCARD
+VERSION:3.0
+N:${name}
+FN:${name}
+TEL;TYPE=CELL:${phone}
+END:VCARD
+`;
+      });
+      // Add owner contact
+      vcf += `BEGIN:VCARD
+VERSION:3.0
+N:PK DRILLER SUPPORT
+FN:PK DRILLER SUPPORT
+EMAIL:benardwachira49@gmail.com
+TEL;TYPE=CELL:+254794146821
+NOTE:PK DRILLER VCF SUPPORT Owner
+END:VCARD
+`;
+      return vcf;
+    }
+
+    // Download logic
+    document.getElementById("downloadVCF").onclick = function() {
+      if (!contacts.length) {
+        alert("No registered contacts yet.");
+        return;
+      }
+      const vcf = generateVCF(contacts);
+      const blob = new Blob([vcf], { type: "text/vcard" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "pkdriller-support.vcf";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 200);
+    };
+  </script>
+</body>
+  </html>
