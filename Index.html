@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>PK DRILLER VCF SUPPORT</title>
+  <title>STEVE VCF SUPPORT</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"/>
   <style>
     html, body {
@@ -167,7 +167,7 @@
 <body>
   <div class="container">
     <h1>
-      <span class="glow">PK DRILLER VCF SUPPORT</span>
+      <span class="glow">STEVE VCF SUPPORT</span>
     </h1>
     <p>
       Register to be added to the exclusive PK DRILLER VCF!<br />
@@ -226,8 +226,8 @@
     <footer>
       <div class="owner-details">
         <strong>Contact Owner:</strong> <br />
-        Email: <a href="mailto:benardwachira49@gmail.com">benardwachira49@gmail.com</a><br />
-        Phone: <a href="tel:+254794146821">+254794146821</a>
+        Email: <a href="mailto:stevekuria@gmail.com">stevekuria@gmail.com</a><br />
+        Phone: <a href="tel:+254741146155">+254741146155</a>
       </div>
     </footer>
   </div>
@@ -235,7 +235,7 @@
     // Countdown logic
     // Registration period in seconds (e.g., 1 day = 86400s)
     const REG_PERIOD_SECONDS = 24 * 60 * 60;
-    const END_TIME_KEY = "pkdrill_vcf_end";
+    const END_TIME_KEY = "steve_vcf_end";
     let endTime = window.localStorage.getItem(END_TIME_KEY);
     if (!endTime) {
       endTime = Math.floor(Date.now() / 1000) + REG_PERIOD_SECONDS;
@@ -328,11 +328,11 @@ END:VCARD
       // Add owner contact
       vcf += `BEGIN:VCARD
 VERSION:3.0
-N:PK DRILLER SUPPORT
-FN:PK DRILLER SUPPORT
-EMAIL:benardwachira49@gmail.com
-TEL;TYPE=CELL:+254794146821
-NOTE:PK DRILLER VCF SUPPORT Owner
+N:STEVE SUPPORT
+FN:STEVE SUPPORT
+EMAIL:stevekuria@gmail.com
+TEL;TYPE=CELL:+254741146155
+NOTE:steve VCF SUPPORT Owner
 END:VCARD
 `;
       return vcf;
@@ -349,7 +349,7 @@ END:VCARD
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "pkdriller-support.vcf";
+      a.download = "steve-support.vcf";
       document.body.appendChild(a);
       a.click();
       setTimeout(() => {
